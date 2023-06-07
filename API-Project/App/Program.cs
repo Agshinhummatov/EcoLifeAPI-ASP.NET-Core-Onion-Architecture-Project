@@ -36,9 +36,14 @@ builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<ISliderRepository, SliderRepository>();
+builder.Services.AddScoped<IAdvertisingRepository, AdvertisingRepository>();
+builder.Services.AddScoped<IBannerRepository, BannerRepository>();
 
 
+builder.Services.AddScoped<IAdvertisingService, AdvertisingService>();
+builder.Services.AddScoped<IBannerService, BannerService>();
 builder.Services.AddScoped<ISliderService, SliderService>();
+
 
 builder.Services.AddScoped<IAccountService, AccountService>();
 

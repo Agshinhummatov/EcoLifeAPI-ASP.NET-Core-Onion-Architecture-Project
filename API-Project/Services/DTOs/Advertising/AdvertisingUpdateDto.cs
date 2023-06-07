@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.DTOs.Slider
+namespace Services.DTOs.Advertising
 {
-    public class SliderUpdateDto
+    public class AdvertisingUpdateDto
     {
         public string? Title { get; set; }
         public string? Description { get; set; }
         public byte[]? Image { get; set; }
+
     }
 }

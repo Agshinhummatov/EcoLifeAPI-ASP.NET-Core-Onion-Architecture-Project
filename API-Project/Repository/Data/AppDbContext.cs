@@ -20,8 +20,15 @@ namespace Repository.Data
            
 
             modelBuilder.ApplyConfiguration(new SliderConfiguration());
+            modelBuilder.ApplyConfiguration(new AdvertisingConfiguration());
+
+            modelBuilder.ApplyConfiguration(new BannerConfiguration());
 
             modelBuilder.Entity<Slider>().HasQueryFilter(m => !m.SoftDelete);
+
+            modelBuilder.Entity<Advertising>().HasQueryFilter(m => !m.SoftDelete);
+
+            modelBuilder.Entity<Banner>().HasQueryFilter(m => !m.SoftDelete);
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 

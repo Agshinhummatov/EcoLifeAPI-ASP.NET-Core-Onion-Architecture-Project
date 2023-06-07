@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.DTOs.Slider
+namespace Services.DTOs.Banner
 {
-    public class SliderUpdateDto
+    public class BannerUpdateDto
     {
         public string? Title { get; set; }
         public string? Description { get; set; }
