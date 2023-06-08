@@ -38,11 +38,15 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<ISliderRepository, SliderRepository>();
 builder.Services.AddScoped<IAdvertisingRepository, AdvertisingRepository>();
 builder.Services.AddScoped<IBannerRepository, BannerRepository>();
+builder.Services.AddScoped<IBenefitRepository, BenefitRepository>();
+builder.Services.AddScoped<IAboutInfoRepository, AboutInfoRepository>();
 
 
 builder.Services.AddScoped<IAdvertisingService, AdvertisingService>();
 builder.Services.AddScoped<IBannerService, BannerService>();
 builder.Services.AddScoped<ISliderService, SliderService>();
+builder.Services.AddScoped<IBenefitService, BenefitService>();
+builder.Services.AddScoped<IAboutInfoService, AboutInfoService>();
 
 
 builder.Services.AddScoped<IAccountService, AccountService>();
@@ -52,18 +56,32 @@ builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWT"))
 builder.Services.AddScoped<JWTSettings>();
 
 
+//builder.Services.AddCors(options =>
+//{
+//    options.AddDefaultPolicy(
+//        builder =>
+//        {
+
+//            //you can configure your custom policy
+//            builder.AllowAnyOrigin()
+//                                .AllowAnyHeader()
+//                                .AllowAnyMethod();
+//        });
+//});
+
+
+
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(
-        builder =>
+    options.AddPolicy(name: "mycors",
+        policy =>
         {
-
-            //you can configure your custom policy
-            builder.AllowAnyOrigin()
-                                .AllowAnyHeader()
-                                .AllowAnyMethod();
+            policy.WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
         });
 });
+
 
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
@@ -98,6 +116,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("mycors");
 app.UseCors();
 
 app.UseHttpsRedirection();

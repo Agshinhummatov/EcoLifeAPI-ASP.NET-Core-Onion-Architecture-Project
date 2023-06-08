@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Domain.Models;
+using Services.DTOs.AboutInfo;
 using Services.DTOs.Account;
 using Services.DTOs.Advertising;
 using Services.DTOs.Banner;
+using Services.DTOs.Benefit;
 using Services.DTOs.Slider;
 
 namespace Services.Mappings
@@ -26,6 +28,17 @@ namespace Services.Mappings
             CreateMap<Banner, BannerListDto>().ReverseMap();
             CreateMap<BannerCreateDto, Banner>();
             CreateMap<BannerUpdateDto, Banner>();
+
+
+            CreateMap<Benefit, BenefitListDto>().ReverseMap();
+            CreateMap<BenefitCreateDto, Benefit>();
+            CreateMap<BenefitUpdateDto, Benefit>();
+
+
+            CreateMap<AboutInfo, AboutInfoListDto>().ReverseMap();
+            CreateMap<AboutInfoCreateDto, AboutInfo>();
+            CreateMap<AboutInfoUpdateDto, AboutInfo>();
+
 
             CreateMap<RegisterDto, AppUser>();
             CreateMap<AppUser, UserDto>();

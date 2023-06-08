@@ -24,7 +24,13 @@ namespace Repository.Data
 
             modelBuilder.ApplyConfiguration(new BannerConfiguration());
 
+            modelBuilder.ApplyConfiguration(new BenefitConfiguration());
+
+            modelBuilder.ApplyConfiguration(new AboutInfoConfiguration());
+
             modelBuilder.Entity<Slider>().HasQueryFilter(m => !m.SoftDelete);
+
+            modelBuilder.Entity<Benefit>().HasQueryFilter(m => !m.SoftDelete);
 
             modelBuilder.Entity<Advertising>().HasQueryFilter(m => !m.SoftDelete);
 
