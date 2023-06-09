@@ -28,6 +28,17 @@ namespace Repository.Data
 
             modelBuilder.ApplyConfiguration(new AboutInfoConfiguration());
 
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
+
+            modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new BasketProductConfiguration());
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new BasketConfiguration());
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Slider>().HasQueryFilter(m => !m.SoftDelete);
 
             modelBuilder.Entity<Benefit>().HasQueryFilter(m => !m.SoftDelete);
