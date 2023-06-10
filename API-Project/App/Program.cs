@@ -40,6 +40,9 @@ builder.Services.AddScoped<IAdvertisingRepository, AdvertisingRepository>();
 builder.Services.AddScoped<IBannerRepository, BannerRepository>();
 builder.Services.AddScoped<IBenefitRepository, BenefitRepository>();
 builder.Services.AddScoped<IAboutInfoRepository, AboutInfoRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 
 
 builder.Services.AddScoped<IAdvertisingService, AdvertisingService>();
@@ -47,6 +50,10 @@ builder.Services.AddScoped<IBannerService, BannerService>();
 builder.Services.AddScoped<ISliderService, SliderService>();
 builder.Services.AddScoped<IBenefitService, BenefitService>();
 builder.Services.AddScoped<IAboutInfoService, AboutInfoService>();
+builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IBasketService, BasketService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 
 
 builder.Services.AddScoped<IAccountService, AccountService>();
@@ -69,7 +76,14 @@ builder.Services.AddScoped<JWTSettings>();
 //        });
 //});
 
+builder.Services.AddHttpContextAccessor();
 
+//builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddMemoryCache();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+//builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddCors(options =>
 {
@@ -117,7 +131,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("mycors");
-app.UseCors();
+app.UseSession();
+
+//app.UseCors();
+
+app.UseRouting();
 
 app.UseHttpsRedirection();
 

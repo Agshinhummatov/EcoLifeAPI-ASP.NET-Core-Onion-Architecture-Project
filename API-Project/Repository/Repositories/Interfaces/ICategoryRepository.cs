@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Repositories.Interfaces
 {
-    internal interface ICategoryRepository : IRepository<Category>
+    public interface ICategoryRepository : IRepository<Category>
     {
         Task<List<Category>> GetAllCategories();
 

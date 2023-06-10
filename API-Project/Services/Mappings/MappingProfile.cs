@@ -52,7 +52,11 @@ namespace Services.Mappings
             CreateMap<BasketProductListDto, BasketProduct>().ReverseMap();
 
 
-            CreateMap<CategoryListDto, Category>().ReverseMap();
+
+            CreateMap<Category, CategoryListDto>().ReverseMap();
+            CreateMap<CategoryCreateDto, Category>();
+            CreateMap<CategoryUpdateDto, Category>();
+
 
             CreateMap<RegisterDto, AppUser>();
             CreateMap<AppUser, UserDto>();

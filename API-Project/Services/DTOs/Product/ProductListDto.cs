@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Services.DTOs.Category;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,8 +17,12 @@ namespace Services.DTOs.Product
         public byte[]? Image { get; set; }
 
         public int Rates { get; set; }
-        public string? CreatedAt { get; set; }
+
+        public DateTime CreatedAt { get; set; }
+
         public int CategoryId { get; set; }
         public CategoryListDto? Category { get; set; }
+
+
     }
 }

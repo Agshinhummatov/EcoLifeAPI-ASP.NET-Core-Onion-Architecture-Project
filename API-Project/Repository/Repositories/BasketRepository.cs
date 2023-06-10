@@ -5,17 +5,22 @@ using Repository.Data;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Http;
 using Repository.Repositories.Interfaces;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace Repository.Repositories
 {
     public class BasketRepository : Repository<Basket>, IBasketRepository
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<AppUser> _usMan;
         private readonly DbSet<Basket> _entities;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public BasketRepository(AppDbContext context, IHttpContextAccessor httpContextAccessor) : base(context)
+
+        public BasketRepository(AppDbContext context, IHttpContextAccessor httpContextAccessor, UserManager<AppUser> usMan) : base(context)
         {
+            _usMan = usMan;
             _context = context;
             _entities = _context.Set<Basket>();
             _httpContextAccessor = httpContextAccessor;
@@ -23,12 +28,17 @@ namespace Repository.Repositories
 
         public async Task AddBasketAsync(int id)
         {
+            //var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var user = _httpContextAccessor.HttpContext.User;
+            var userId = "214b8c2f-5677-4a76-a691-3b363855466a";
 
-            if (user == null) throw new NullReferenceException();
+            AppUser user = await _usMan.FindByIdAsync(userId);
+            var name = user.Email;
+            //var user = _httpContextAccessor.HttpContext.User;
 
-            var userId = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            //if (user == null) throw new NullReferenceException();
+
+            //var userId = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
 
             if (userId == null) throw new NullReferenceException();
 
@@ -47,6 +57,7 @@ namespace Repository.Repositories
                 await _entities.AddAsync(basket);
                 await _context.SaveChangesAsync();
             }
+           
 
 
             var basketProduct = basket.BasketProducts
