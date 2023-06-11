@@ -28,17 +28,12 @@ namespace Repository.Repositories
 
         public async Task AddBasketAsync(int id)
         {
-            //var userId = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            var userId = "214b8c2f-5677-4a76-a691-3b363855466a";
+            var user = _httpContextAccessor.HttpContext.User;
 
-            AppUser user = await _usMan.FindByIdAsync(userId);
-            var name = user.Email;
-            //var user = _httpContextAccessor.HttpContext.User;
+            if (user == null) throw new NullReferenceException();
 
-            //if (user == null) throw new NullReferenceException();
-
-            //var userId = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            var userId = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
 
             if (userId == null) throw new NullReferenceException();
 
