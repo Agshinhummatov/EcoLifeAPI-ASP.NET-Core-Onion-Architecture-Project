@@ -9,7 +9,7 @@ namespace Domain.Models
 {
     public class AppUser : IdentityUser
     {
-        public string FullName { get; set; }
+        public string? FullName { get; set; }
 
         public Basket Basket { get; set; }
     }

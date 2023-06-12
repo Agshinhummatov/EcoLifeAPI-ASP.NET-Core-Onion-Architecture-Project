@@ -86,31 +86,47 @@ namespace Services.Services
         }
 
 
-        public async Task<LoginResponse> SignInAsync(LoginDto model)
+        //public async Task<LoginResponse> SignInAsync(LoginDto model)
+        //{
+        //    var user = await _userManager.FindByEmailAsync(model.Email);
+
+        //    if(user == null)
+        //        return new LoginResponse { Token = null, StatusMessage = "Failed", Errors = new List<string>() { "Email or password wrong" } };
+
+        //    if (!await _userManager.CheckPasswordAsync(user, model.Password))
+        //        return new LoginResponse { Token = null, StatusMessage = "Failed", Errors = new List<string>() { "Email or password wrong" } };
+
+
+
+        //    var roles = await _userManager.GetRolesAsync(user);
+
+        //    string token = GenerateJwtToken(user.UserName, (List<string>)roles);
+
+        //    return new LoginResponse { Errors = null, StatusMessage = "Success", Token = token };
+
+        //}
+
+        public async Task<string?> SignInAsync(LoginDto model)
         {
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            var dbUser = await _userManager.FindByEmailAsync(model.Email);
 
-            if(user == null)
-                return new LoginResponse { Token = null, StatusMessage = "Failed", Errors = new List<string>() { "Email or password wrong" } };
+            if (dbUser is null) return null;
 
-            if (!await _userManager.CheckPasswordAsync(user, model.Password))
-                return new LoginResponse { Token = null, StatusMessage = "Failed", Errors = new List<string>() { "Email or password wrong" } };
-
+            if (!await _userManager.CheckPasswordAsync(dbUser, model.Password))
+                return null;
 
 
-            var roles = await _userManager.GetRolesAsync(user);
+            var roles = await _userManager.GetRolesAsync(dbUser);
 
-            string token = GenerateJwtToken(user.UserName, (List<string>)roles);
 
-            return new LoginResponse { Errors = null, StatusMessage = "Success", Token = token };
-            
+            return GenerateJwtToken(dbUser.UserName, dbUser.Id, (List<string>)roles);
         }
 
-        private string GenerateJwtToken(string username, List<string> roles)
+        private string GenerateJwtToken(string username, string userId, List<string> roles)
         {
             var claims = new List<Claim>
          {
-            new Claim(JwtRegisteredClaimNames.Sub, username),
+            new Claim(JwtRegisteredClaimNames.Sub, userId),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(ClaimTypes.NameIdentifier, username)
          };

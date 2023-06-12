@@ -12,6 +12,7 @@ using Services.Services;
 using Services.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -63,18 +64,18 @@ builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWT"))
 builder.Services.AddScoped<JWTSettings>();
 
 
-//builder.Services.AddCors(options =>
-//{
-//    options.AddDefaultPolicy(
-//        builder =>
-//        {
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        builder =>
+        {
 
-//            //you can configure your custom policy
-//            builder.AllowAnyOrigin()
-//                                .AllowAnyHeader()
-//                                .AllowAnyMethod();
-//        });
-//});
+            //you can configure your custom policy
+            builder.AllowAnyOrigin()
+                                .AllowAnyHeader()
+                                .AllowAnyMethod();
+        });
+});
 
 builder.Services.AddHttpContextAccessor();
 
@@ -85,18 +86,25 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
 //builder.Services.AddHttpContextAccessor();
 
-builder.Services.AddCors(options =>
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy(name: "mycors",
+//        policy =>
+//        {
+//            policy.WithOrigins("http://localhost:3000")
+//            .AllowAnyHeader()
+//            .AllowAnyMethod();
+//        });
+//});
+
+var authBuilder = builder.Services.AddAuthentication("CookieAuth");
+authBuilder.AddCookie("CookieAuth", options =>
 {
-    options.AddPolicy(name: "mycors",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:3000")
-            .AllowAnyHeader()
-            .AllowAnyMethod();
-        });
+    options.Cookie.Name = "CookieAuth";
 });
 
-
+builder.Services.AddControllers().AddJsonOptions(x =>
+        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
 builder.Services
@@ -130,10 +138,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("mycors");
+//app.UseCors("mycors");
 app.UseSession();
 
-//app.UseCors();
+app.UseCors();
 
 app.UseRouting();
 

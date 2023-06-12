@@ -7,7 +7,7 @@ namespace Services.Services.Interfaces
     public interface IAccountService
     {
         Task<RegisterResponse> SignUpAsync(RegisterDto model);
-        Task<LoginResponse> SignInAsync(LoginDto model);
+        Task<string?> SignInAsync(LoginDto model);
         Task CreateRoleAsync();
         Task<IEnumerable<IdentityRole>> GetRolesAsync();
         Task<IEnumerable<UserDto>> GetUsersAsync();
