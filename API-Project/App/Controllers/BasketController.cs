@@ -18,7 +18,7 @@ namespace App.Controllers
         }
 
 
-       //[Authorize]
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddBasket([Required][FromQuery] int id)
         {
@@ -28,7 +28,7 @@ namespace App.Controllers
         }
 
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetBasketProducts()
         {
@@ -37,7 +37,7 @@ namespace App.Controllers
         }
 
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetBasketCount()
         {
@@ -45,7 +45,7 @@ namespace App.Controllers
         }
 
 
-        //[Authorize]
+        [Authorize]
         [HttpDelete]
         public async Task<IActionResult> DeleteBasketProduct([Required][FromQuery] int id)
         {

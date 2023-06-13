@@ -21,7 +21,8 @@ namespace Services.DTOs.Product
         public DateTime CreatedAt { get; set; }
 
         public int CategoryId { get; set; }
-        public CategoryListDto? Category { get; set; }
+
+        public string? CategoryName { get; set; }
 
 
     }

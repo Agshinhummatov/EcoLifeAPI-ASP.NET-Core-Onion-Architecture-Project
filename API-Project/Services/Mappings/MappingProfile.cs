@@ -45,7 +45,7 @@ namespace Services.Mappings
 
 
             CreateMap<ProductCreateDto, Product>().ReverseMap();
-            CreateMap<ProductListDto, Product>().ReverseMap();
+            CreateMap<Product, ProductListDto>().ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
             CreateMap<ProductUpdateDto, Product>().ReverseMap();
             CreateMap<ProductGetDto, Product>().ReverseMap();
 

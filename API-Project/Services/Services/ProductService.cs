@@ -26,7 +26,7 @@ namespace Services.Services
 
         public async Task CreateAsync(ProductCreateDto product) => await _productRepo.CreateAsync(_mapper.Map<Product>(product));
 
-        public async Task<IEnumerable<ProductListDto>> GetAllAsync() => _mapper.Map<IEnumerable<ProductListDto>>(await _productRepo.FindAllAsync());
+        public async Task<IEnumerable<ProductListDto>> GetAllAsync() => _mapper.Map<IEnumerable<ProductListDto>>(await _productRepo.GetAllProductsWithCategories());
 
         public async Task<ProductListDto> GetByIdAsync(int? id) => _mapper.Map<ProductListDto>(await _productRepo.GetByIdAsync(id));
 
