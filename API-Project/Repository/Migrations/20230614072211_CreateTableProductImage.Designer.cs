@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository.Data;
 
@@ -11,9 +12,10 @@ using Repository.Data;
 namespace Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230614072211_CreateTableProductImage")]
+    partial class CreateTableProductImage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -336,7 +338,7 @@ namespace Repository.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("ProductId")
+                    b.Property<int>("ProductImageId")
                         .HasColumnType("int");
 
                     b.Property<int>("Rates")
@@ -352,7 +354,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("ProductImageId");
 
                     b.ToTable("Product");
                 });
@@ -372,9 +374,6 @@ namespace Repository.Migrations
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("SoftDelete")
                         .HasColumnType("bit");
 
@@ -382,8 +381,6 @@ namespace Repository.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductImage");
                 });
@@ -591,22 +588,15 @@ namespace Repository.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Models.Product", null)
+                    b.HasOne("Domain.Models.ProductImage", "ProductImage")
                         .WithMany("Products")
-                        .HasForeignKey("ProductId");
-
-                    b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("Domain.Models.ProductImage", b =>
-                {
-                    b.HasOne("Domain.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("ProductImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("Category");
+
+                    b.Navigation("ProductImage");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -676,7 +666,7 @@ namespace Repository.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Domain.Models.Product", b =>
+            modelBuilder.Entity("Domain.Models.ProductImage", b =>
                 {
                     b.Navigation("Products");
                 });

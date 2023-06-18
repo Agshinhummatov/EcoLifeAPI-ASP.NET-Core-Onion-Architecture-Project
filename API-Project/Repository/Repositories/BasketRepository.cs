@@ -90,7 +90,7 @@ namespace Repository.Repositories
 
             var basket = await _entities
                 .Include(m => m.BasketProducts)
-                .ThenInclude(m => m.Product)
+                .ThenInclude(m => m.Product).ThenInclude(m=>m.ProductImages)
                 .FirstOrDefaultAsync(m => m.AppUserId == userId);
 
             var basketProducts = basket.BasketProducts;
@@ -126,6 +126,44 @@ namespace Repository.Repositories
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task DeleteItemBasket(int id)
+        {
+            var user = _httpContextAccessor.HttpContext.User;
+
+            if (user == null)
+                throw new NullReferenceException();
+
+            var userId = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            if (userId == null)
+                throw new NullReferenceException();
+
+            var basket = await _entities
+                .Include(m => m.BasketProducts)
+                .FirstOrDefaultAsync(m => m.AppUserId == userId);
+
+            if (basket == null)
+                throw new NullReferenceException();
+
+            var basketProduct = basket.BasketProducts
+                .FirstOrDefault(bp => bp.ProductId == id && bp.BasketId == basket.Id);
+
+            if (basketProduct == null)
+                throw new NullReferenceException();
+
+            if (basketProduct.Quantity > 1)
+            {
+                basketProduct.Quantity--;
+            }
+            else
+            {
+                //basket.BasketProducts.Remove(basketProduct);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
 
         public async Task<int> GetBasketCount()
         {

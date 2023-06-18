@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Services.DTOs.ProductImage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,11 +15,13 @@ namespace Services.DTOs.Product
         public decimal Price { get; set; }
 
         public int Rates { get; set; }
-
-        public byte[] Image { get; set; }
+      
         public string Description { get; set; }
-
         public int CategoryId { get; set; }
 
+
+        public IFormFileCollection Images { get; set; }
+
+        //public List<byte[]>  Image { get; set; }
     }
 }

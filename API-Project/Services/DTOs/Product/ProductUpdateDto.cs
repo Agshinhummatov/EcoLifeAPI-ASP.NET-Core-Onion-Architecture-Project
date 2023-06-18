@@ -12,8 +12,10 @@ namespace Services.DTOs.Product
         public int Count { get; set; }
         public decimal Price { get; set; }
         public int Rates { get; set; }
-        public byte[] Image { get; set; }
+     
         public string? Description { get; set; }
         public int CategoryId { get; set; }
+
+        public byte[] Photo { get; set; }
     }
 }

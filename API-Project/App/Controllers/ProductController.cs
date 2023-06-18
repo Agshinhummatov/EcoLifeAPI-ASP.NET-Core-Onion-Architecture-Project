@@ -54,7 +54,7 @@ namespace App.Controllers
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody] ProductCreateDto product)
+        public async Task<IActionResult> Create([FromForm] ProductCreateDto product)
         {
             try
             {

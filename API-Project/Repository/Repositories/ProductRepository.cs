@@ -2,11 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Repository.Data;
 using Repository.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Repository.Repositories
 {
@@ -25,7 +20,7 @@ namespace Repository.Repositories
         {
             var products = await _entities
                 .Where(m => m.SoftDelete == false)
-                .Include(m => m.Category)
+                .Include(m => m.Category).Include(m => m.ProductImages)
                 .ToListAsync();
             return products;
         }

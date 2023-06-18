@@ -2,17 +2,12 @@
 using Domain.Models;
 using Repository.Repositories.Interfaces;
 using Services.DTOs.Product;
-using Services.DTOs.Slider;
+using Services.Helpers;
 using Services.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Services
 {
-    public class ProductService :IProductService
+    public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepo;
 
@@ -24,7 +19,38 @@ namespace Services.Services
             _mapper = mapper;
         }
 
-        public async Task CreateAsync(ProductCreateDto product) => await _productRepo.CreateAsync(_mapper.Map<Product>(product));
+        public async Task CreateAsync(ProductCreateDto productDto)
+        {
+            var product = new Product
+            {
+                Name = productDto.Name,
+                Price = productDto.Price,
+                Description = productDto.Description,
+                CategoryId = productDto.CategoryId,
+                Rates = productDto.Rates,
+                Count = productDto.Count,
+                
+
+            };
+
+            var productImages = new List<ProductImage>();
+
+            foreach (var imageDto in productDto.Images)
+            {
+                var productImage = new ProductImage
+                {
+                    Image = await imageDto.GetBytes(),
+                    Product = product
+
+                };
+
+                productImages.Add(productImage);
+            }
+
+            product.ProductImages = productImages;
+
+            await _productRepo.CreateAsync(product);
+        }
 
         public async Task<IEnumerable<ProductListDto>> GetAllAsync() => _mapper.Map<IEnumerable<ProductListDto>>(await _productRepo.GetAllProductsWithCategories());
 

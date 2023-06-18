@@ -14,12 +14,12 @@ namespace Services.Mappings
 {
     public class MappingProfile : Profile
     {
-        public MappingProfile() 
+        public MappingProfile()
         {
-           
 
 
-            CreateMap<Slider,SliderListDto>().ReverseMap();
+
+            CreateMap<Slider, SliderListDto>().ReverseMap();
             CreateMap<SliderCreateDto, Slider>();
             CreateMap<SliderUpdateDto, Slider>();
 
@@ -45,7 +45,10 @@ namespace Services.Mappings
 
 
             CreateMap<ProductCreateDto, Product>().ReverseMap();
-            CreateMap<Product, ProductListDto>().ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
+            CreateMap<Product, ProductListDto>().ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name)).ForMember(dest => dest.Photo, opt => opt.MapFrom(src => src.ProductImages.Select(m => m.Image))).
+                ForMember(dest => dest.Photo, opt => opt.MapFrom(src => src.ProductImages.Select(m => Convert.ToBase64String(m.Image))));
+
+
             CreateMap<ProductUpdateDto, Product>().ReverseMap();
             CreateMap<ProductGetDto, Product>().ReverseMap();
 

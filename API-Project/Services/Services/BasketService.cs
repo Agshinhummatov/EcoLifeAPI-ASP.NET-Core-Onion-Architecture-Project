@@ -30,6 +30,12 @@ namespace Services.Services
             await _repo.DeleteBasket(id);
         }
 
+
+        public async Task DeleteBasketItemAsync(int id)
+        {
+            await _repo.DeleteItemBasket(id);
+        }
+
         public async Task<int> GetBasketCountAsync()
         {
             int basketCount = await _repo.GetBasketCount();

@@ -52,5 +52,14 @@ namespace App.Controllers
             await _basketService.DeleteBasketAsync(id);
             return Ok();
         }
+
+
+        [Authorize]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteBasketItemProduct([Required][FromQuery] int id)
+        {
+            await _basketService.DeleteBasketItemAsync(id);
+            return Ok();
+        }
     }
 }

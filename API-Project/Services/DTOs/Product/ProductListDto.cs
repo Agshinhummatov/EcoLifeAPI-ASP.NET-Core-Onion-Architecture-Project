@@ -14,8 +14,6 @@ namespace Services.DTOs.Product
         public string? Name { get; set; }
         public int Count { get; set; }
         public decimal Price { get; set; }
-        public byte[]? Image { get; set; }
-
         public int Rates { get; set; }
 
         public DateTime CreatedAt { get; set; }
@@ -24,6 +22,12 @@ namespace Services.DTOs.Product
 
         public string? CategoryName { get; set; }
 
+
+        //public List<byte[]> Photo { get; set; }
+
+        public List<string> Photo { get; set; }
+
+        //public byte[]? Image { get; set; }
 
     }
 }

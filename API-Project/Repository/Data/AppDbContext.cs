@@ -30,6 +30,9 @@ namespace Repository.Data
 
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
 
+            modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             base.OnModelCreating(modelBuilder);
 
