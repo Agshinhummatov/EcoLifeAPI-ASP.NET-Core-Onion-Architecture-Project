@@ -10,13 +10,15 @@ namespace Services.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepo;
+        private readonly IBasketRepository _basketRepository;
 
         private readonly IMapper _mapper;
 
-        public ProductService(IProductRepository productRepo, IMapper mapper)
+        public ProductService(IProductRepository productRepo, IMapper mapper, IBasketRepository basketRepository)
         {
             _productRepo = productRepo;
             _mapper = mapper;
+            _basketRepository = basketRepository;
         }
 
         public async Task CreateAsync(ProductCreateDto productDto)
@@ -56,7 +58,10 @@ namespace Services.Services
 
         public async Task<ProductListDto> GetByIdAsync(int? id) => _mapper.Map<ProductListDto>(await _productRepo.GetByIdAsync(id));
 
+
+
         public async Task DeleteAsync(int? id) => await _productRepo.DeleteAsync(await _productRepo.GetByIdAsync(id));
+
 
         public async Task UpdateAsync(int? id, ProductUpdateDto product)
         {

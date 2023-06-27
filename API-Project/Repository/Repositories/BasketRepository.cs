@@ -87,6 +87,7 @@ namespace Repository.Repositories
 
             if (userId == null) throw new UnauthorizedAccessException();
 
+            
 
             var basket = await _entities
                 .Include(m => m.BasketProducts)
@@ -95,8 +96,58 @@ namespace Repository.Repositories
 
             var basketProducts = basket.BasketProducts;
 
+          
+            
             return basketProducts;
         }
+
+
+        public async Task<int> GetBasketSingleProd(int prodId)
+        {
+            var user = _httpContextAccessor.HttpContext.User;
+
+            if (user == null) throw new UnauthorizedAccessException();
+
+            var userId = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            if (userId == null) throw new UnauthorizedAccessException();
+
+            var basket = await _entities
+                .Include(m => m.BasketProducts)
+                .ThenInclude(m => m.Product).ThenInclude(m => m.ProductImages)
+                .FirstOrDefaultAsync(m => m.AppUserId == userId);
+            var basketProduct = basket.BasketProducts
+              .FirstOrDefault(bp => bp.ProductId == prodId && bp.BasketId == basket.Id);
+            var cnt = basketProduct.Quantity;
+            return cnt;
+           
+        }
+
+
+        //public async Task<BasketProduct> GetById(int id)
+        //{
+        //    var user = _httpContextAccessor.HttpContext.User;
+
+        //    if (user == null) throw new UnauthorizedAccessException();
+
+        //    var userId = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+        //    if (userId == null) throw new UnauthorizedAccessException();
+
+        //    var basketProduct = await _entities
+        //        .Include(m => m.Product)
+        //        .ThenInclude(m => m.ProductImages)
+        //        .FirstOrDefaultAsync(m => m.BasketId == id && m.AppUserId == userId);
+
+        //    return basketProduct;
+        //}
+
+
+
+
+
+
+
 
 
         public async Task DeleteBasket(int id)
@@ -185,11 +236,42 @@ namespace Repository.Repositories
             var uniqeProducts = basketProducts.GroupBy(m => m.Id)
                 .Select(m => m.First())
                 .ToList();
-
             var uniqueProductCount = uniqeProducts.Count();
-
-
             return uniqueProductCount;
         }
+
+
+
+        public async Task<int> GetProductQuantity(int productId)
+        {
+            var user = _httpContextAccessor.HttpContext.User;
+
+            if (user == null) throw new UnauthorizedAccessException();
+
+            var userId = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            if (userId == null) throw new UnauthorizedAccessException();
+
+            var basket = await _entities
+                .Include(m => m.BasketProducts)
+                .ThenInclude(m => m.Product)
+                .FirstOrDefaultAsync(m => m.AppUserId == userId);
+
+            var product = basket.BasketProducts.FirstOrDefault(m => m.ProductId == productId);
+
+            if (product == null)
+            {
+                // İstediğiniz ProductId'ye sahip bir ürün bulunamadı.
+                // Burada bir hata yönetimi yapabilirsiniz.
+                return 0;
+            }
+
+            var productQuantity = product.Quantity;
+
+            return productQuantity;
+        }
+
+
+
     }
 }

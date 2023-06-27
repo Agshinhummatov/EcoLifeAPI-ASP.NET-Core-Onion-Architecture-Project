@@ -67,5 +67,12 @@ namespace Repository.Repositories
             entities.Update(entity);
             await _context.SaveChangesAsync();
         }
+
+
+
+        public async Task<bool> IsExsist(Expression<Func<T, bool>> expression)
+        {
+            return await entities.AnyAsync(expression);
+        }
     }
 }

@@ -16,6 +16,11 @@ namespace Repository.Repositories.Interfaces
 
         Task DeleteItemBasket(int id);
 
+        Task<int> GetBasketSingleProd(int prodId);
+
+
+        Task<int> GetProductQuantity(int productId);
+
 
 
     }

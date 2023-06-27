@@ -11,5 +11,7 @@ namespace Repository.Repositories.Interfaces
         Task DeleteAsync(T entity);
         Task SoftDeleteAsync(int? id);
         Task<IEnumerable<T>> FindAllAsync(Expression<Func<T,bool>> expression = null);
+
+        Task<bool> IsExsist(Expression<Func<T, bool>> expression);
     }
 }

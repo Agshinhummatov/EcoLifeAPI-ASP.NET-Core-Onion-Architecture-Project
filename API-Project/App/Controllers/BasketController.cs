@@ -44,6 +44,14 @@ namespace App.Controllers
             return Ok(await _basketService.GetBasketCountAsync());
         }
 
+        [Route("{id}")]
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetBasketItemCount([FromRoute][Required] int id)
+        {
+            return Ok(await _basketService.GetItemBasketCount(id));
+        }
+
 
         [Authorize]
         [HttpDelete]

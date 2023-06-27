@@ -15,5 +15,20 @@ namespace Services.Helpers
             await formFile.CopyToAsync(memoryStream);
             return memoryStream.ToArray();
         }
+
+
+        public static async Task<byte[]> ReadFormFileAsync(IFormFile file)
+        {
+            if (file == null)
+            {
+                return null;
+            }
+
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                return memoryStream.ToArray();
+            }
+        }
     }
 }

@@ -15,5 +15,8 @@ namespace Services.Services.Interfaces
         Task<int> GetBasketCountAsync();
 
         Task DeleteBasketItemAsync(int id);
+
+        Task<int> GetItemBasketCount(int id);
+
     }
 }

@@ -43,6 +43,16 @@ namespace Services.Services
             return basketCount;
         }
 
+
+        public async Task<int> GetItemBasketCount(int id)
+        {
+            int basketCount = await _repo.GetProductQuantity(id);
+
+            return basketCount;
+        }
+
+
+
         public async Task<List<BasketProductListDto>> GetBasketProductsAsync()
         {
             var basketProducts = await _repo.GetBasketProducts();

@@ -12,9 +12,9 @@ namespace Services.Services.Interfaces
     {
         Task<IEnumerable<BannerListDto>> GetAllAsync();
         Task<BannerListDto> GetByIdAsync(int? id);
-        Task CreateAsync(BannerCreateDto baner);
+        Task CreateAsync(BannerCreateDto bannerCreateDto);
         Task DeleteAsync(int? id);
-        Task UpdateAsync(int? id, BannerUpdateDto banner);
+        Task UpdateAsync(int? id, BannerUpdateDto bannerUpdateDto);
         Task<IEnumerable<BannerListDto>> SearchAsync(string? searchText);
         Task SoftDeleteAsync(int? id);
 
