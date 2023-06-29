@@ -12,9 +12,9 @@ namespace Services.Services.Interfaces
     {
         Task<IEnumerable<AdvertisingListDto>> GetAllAsync();
         Task<AdvertisingListDto> GetByIdAsync(int? id);
-        Task CreateAsync(AdvertisingCreateDto advertising);
+        Task CreateAsync(AdvertisingCreateDto advertisingCreateDto);
         Task DeleteAsync(int? id);
-        Task UpdateAsync(int? id, AdvertisingUpdateDto advertising);
+        Task UpdateAsync(int? id, AdvertisingUpdateDto advertisingUpdateDto);
         Task<IEnumerable<AdvertisingListDto>> SearchAsync(string? searchText);
         Task SoftDeleteAsync(int? id);
     }

@@ -28,7 +28,7 @@ namespace Services.Services
             _mapper = mapper;
         }
 
-        //public async Task CreateAsync(BannerCreateDto banner) => await _bannerRepo.CreateAsync(_mapper.Map<Banner>(banner));
+      
 
 
         public async Task CreateAsync(BannerCreateDto bannerCreateDto)
@@ -48,10 +48,7 @@ namespace Services.Services
                 throw new Exception("Title and Description are required.");
             }
 
-            //if (await _bannerRepo.IsExsist(b => b.Title == bannerCreateDto.Title))
-            //{
-            //    throw new Exception("Title already exists.");
-            //}
+           
 
             var mapBanner = _mapper.Map<Banner>(bannerCreateDto);
             mapBanner.Image = await bannerCreateDto.Photo.GetBytes();

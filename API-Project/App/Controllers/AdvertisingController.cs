@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.DTOs.Advertising;
 using Services.DTOs.Slider;
+using Services.Helpers.Enums;
 using Services.Services;
 using Services.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
@@ -50,6 +52,7 @@ namespace App.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromForm] AdvertisingCreateDto advertising)
@@ -66,6 +69,7 @@ namespace App.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
@@ -83,6 +87,7 @@ namespace App.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]

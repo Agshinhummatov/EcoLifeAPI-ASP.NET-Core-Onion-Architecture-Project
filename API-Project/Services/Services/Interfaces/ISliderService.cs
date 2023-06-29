@@ -12,9 +12,9 @@ namespace Services.Services.Interfaces
     {
         Task<IEnumerable<SliderListDto>> GetAllAsync();
         Task<SliderListDto> GetByIdAsync(int? id);
-        Task CreateAsync(SliderCreateDto slider);
+        Task CreateAsync(SliderCreateDto sliderCreateDto);
         Task DeleteAsync(int? id);
-        Task UpdateAsync(int? id, SliderUpdateDto slider);
+        Task UpdateAsync(int? id, SliderUpdateDto sliderUpdateDto);
         Task<IEnumerable<SliderListDto>> SearchAsync(string? searchText);
         Task SoftDeleteAsync(int? id);
     }

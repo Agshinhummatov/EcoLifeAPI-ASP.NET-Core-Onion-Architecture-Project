@@ -12,9 +12,9 @@ namespace Services.Services.Interfaces
     {
         Task<IEnumerable<BenefitListDto>> GetAllAsync();
         Task<BenefitListDto> GetByIdAsync(int? id);
-        Task CreateAsync(BenefitCreateDto benefit);
+        Task CreateAsync(BenefitCreateDto benefitCreateDto);
         Task DeleteAsync(int? id);
-        Task UpdateAsync(int? id, BenefitUpdateDto benefit);
+        Task UpdateAsync(int? id, BenefitUpdateDto benefitUpdateDto);
         Task<IEnumerable<BenefitListDto>> SearchAsync(string? searchText);
         Task SoftDeleteAsync(int? id);
     }

@@ -2,11 +2,13 @@
 using Domain.Models;
 using Repository.Repositories;
 using Repository.Repositories.Interfaces;
+using Services.DTOs.Advertising;
 using Services.DTOs.Benefit;
-
+using Services.Helpers;
 using Services.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +26,28 @@ namespace Services.Services
         }
 
 
-        public async Task CreateAsync(BenefitCreateDto benefit) => await _benefitRepo.CreateAsync(_mapper.Map<Benefit>(benefit));
+        public async Task CreateAsync(BenefitCreateDto benefitCreateDto)
+        {
+            var validationContext = new ValidationContext(benefitCreateDto, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(benefitCreateDto, validationContext, validationResults, true);
+
+            if (!isValid)
+            {
+                string errorMessages = string.Join(", ", validationResults.Select(vr => vr.ErrorMessage));
+                throw new Exception(errorMessages);
+            }
+
+            if (string.IsNullOrEmpty(benefitCreateDto.Title))
+            {
+                throw new Exception("Title is required.");
+            }
+
+            var mapBenefit = _mapper.Map<Benefit>(benefitCreateDto);
+            mapBenefit.Image = await benefitCreateDto.Photo.GetBytes();
+            await _benefitRepo.CreateAsync(mapBenefit);
+
+        }
 
         public async Task<IEnumerable<BenefitListDto>> GetAllAsync() => _mapper.Map<IEnumerable<BenefitListDto>>(await _benefitRepo.FindAllAsync());
 
@@ -32,13 +55,21 @@ namespace Services.Services
 
         public async Task DeleteAsync(int? id) => await _benefitRepo.DeleteAsync(await _benefitRepo.GetByIdAsync(id));
 
-        public async Task UpdateAsync(int? id, BenefitUpdateDto benefit)
+        public async Task UpdateAsync(int? id, BenefitUpdateDto benefitUpdateDto)
         {
+
             if (id is null) throw new ArgumentNullException();
 
             var existBenefit = await _benefitRepo.GetByIdAsync(id) ?? throw new NullReferenceException();
 
-            _mapper.Map(benefit, existBenefit);
+            existBenefit.Title = benefitUpdateDto.Title ?? existBenefit.Title;
+           
+
+            if (benefitUpdateDto.Photo != null)
+            {
+
+                existBenefit.Image = await benefitUpdateDto.Photo.GetBytes();
+            }
 
             await _benefitRepo.UpdateAsync(existBenefit);
         }
