@@ -37,11 +37,20 @@ namespace App.Controllers
         }
 
 
-        [Authorize]
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetBasketCount()
         {
-            return Ok(await _basketService.GetBasketCountAsync());
+            try
+            {
+                var basketCount = await _basketService.GetBasketCountAsync();
+                return Ok(basketCount);
+            }
+            catch (Exception ex)
+            {
+                // Hata durumunda yapılacak işlemler
+                return StatusCode(500, "Sunucu hatası: " + ex.Message);
+            }
         }
 
         [Route("{id}")]

@@ -2,10 +2,13 @@
 using Domain.Models;
 using Repository.Repositories.Interfaces;
 using Services.DTOs.Advertising;
+using Services.DTOs.Banner;
 using Services.DTOs.Slider;
+using Services.Helpers;
 using Services.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,7 +27,30 @@ namespace Services.Services
         }
 
 
-        public async Task CreateAsync(AdvertisingCreateDto advertising) => await _adverstingRepo.CreateAsync(_mapper.Map<Advertising>(advertising));
+        public async Task CreateAsync(AdvertisingCreateDto advertisingCreateDto)
+        {
+
+            var validationContext = new ValidationContext(advertisingCreateDto, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(advertisingCreateDto, validationContext, validationResults, true);
+
+            if (!isValid)
+            {
+                string errorMessages = string.Join(", ", validationResults.Select(vr => vr.ErrorMessage));
+                throw new Exception(errorMessages);
+            }
+
+            if (string.IsNullOrEmpty(advertisingCreateDto.Title) || string.IsNullOrEmpty(advertisingCreateDto.Description))
+            {
+                throw new Exception("Title and Description are required.");
+            }
+
+            var mapAdvertising = _mapper.Map<Advertising>(advertisingCreateDto);
+            mapAdvertising.Image = await advertisingCreateDto.Photo.GetBytes();
+            await _adverstingRepo.CreateAsync(mapAdvertising);
+           
+
+        }
 
         public async Task<IEnumerable<AdvertisingListDto>> GetAllAsync() => _mapper.Map<IEnumerable<AdvertisingListDto>>(await _adverstingRepo.FindAllAsync());
 
@@ -32,13 +58,21 @@ namespace Services.Services
 
         public async Task DeleteAsync(int? id) => await _adverstingRepo.DeleteAsync(await _adverstingRepo.GetByIdAsync(id));
 
-        public async Task UpdateAsync(int? id, AdvertisingUpdateDto advertising)
+        public async Task UpdateAsync(int? id, AdvertisingUpdateDto advertisingUpdateDto)
         {
+
             if (id is null) throw new ArgumentNullException();
 
             var existAdvertising = await _adverstingRepo.GetByIdAsync(id) ?? throw new NullReferenceException();
 
-            _mapper.Map(advertising, existAdvertising);
+            existAdvertising.Title = advertisingUpdateDto.Title ?? existAdvertising.Title;
+            existAdvertising.Description = advertisingUpdateDto.Description ?? existAdvertising.Description;
+
+            if (advertisingUpdateDto.Photo != null)
+            {
+
+                existAdvertising.Image = await advertisingUpdateDto.Photo.GetBytes();
+            }
 
             await _adverstingRepo.UpdateAsync(existAdvertising);
         }

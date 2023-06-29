@@ -218,59 +218,87 @@ namespace Repository.Repositories
 
         public async Task<int> GetBasketCount()
         {
-            var user = _httpContextAccessor.HttpContext.User;
+            try
+            {
+                var user = _httpContextAccessor.HttpContext.User;
 
-            if (user == null) throw new UnauthorizedAccessException();
+                if (user == null) throw new UnauthorizedAccessException();
 
-            var userId = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+                var userId = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
 
-            if (userId == null) throw new UnauthorizedAccessException();
+                if (userId == null) throw new UnauthorizedAccessException();
 
-            var basket = await _entities
-              .Include(m => m.BasketProducts)
-              .ThenInclude(m => m.Product)
-              .FirstOrDefaultAsync(m => m.AppUserId == userId);
+                var basket = await _entities
+                  .Include(m => m.BasketProducts)
+                  .ThenInclude(m => m.Product)
+                  .FirstOrDefaultAsync(m => m.AppUserId == userId);
 
-            var basketProducts = basket.BasketProducts;
+                var basketProducts = basket?.BasketProducts;
 
-            var uniqeProducts = basketProducts.GroupBy(m => m.Id)
-                .Select(m => m.First())
-                .ToList();
-            var uniqueProductCount = uniqeProducts.Count();
-            return uniqueProductCount;
+                var uniqeProducts = basketProducts?.GroupBy(m => m.Id)
+                    .Select(m => m.First())
+                    .ToList();
+
+                var uniqueProductCount = uniqeProducts?.Count() ?? 0;
+                return uniqueProductCount;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // Kullanıcı yetkilendirme hatası durumunda yapılacak işlemler
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                // Diğer hatalar için yapılacak işlemler
+                // Örneğin, hata loglama, istemciye hata mesajı dönme, vb.
+                throw ex;
+            }
         }
 
 
 
         public async Task<int> GetProductQuantity(int productId)
         {
-            var user = _httpContextAccessor.HttpContext.User;
-
-            if (user == null) throw new UnauthorizedAccessException();
-
-            var userId = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-
-            if (userId == null) throw new UnauthorizedAccessException();
-
-            var basket = await _entities
-                .Include(m => m.BasketProducts)
-                .ThenInclude(m => m.Product)
-                .FirstOrDefaultAsync(m => m.AppUserId == userId);
-
-            var product = basket.BasketProducts.FirstOrDefault(m => m.ProductId == productId);
-
-            if (product == null)
+            try
             {
-                // İstediğiniz ProductId'ye sahip bir ürün bulunamadı.
-                // Burada bir hata yönetimi yapabilirsiniz.
+                var user = _httpContextAccessor.HttpContext.User;
+
+                if (user == null) throw new UnauthorizedAccessException();
+
+                var userId = user.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+                if (userId == null) throw new UnauthorizedAccessException();
+
+                var basket = await _entities
+                    .Include(m => m.BasketProducts)
+                    .ThenInclude(m => m.Product)
+                    .FirstOrDefaultAsync(m => m.AppUserId == userId);
+
+                var product = basket?.BasketProducts.FirstOrDefault(m => m.ProductId == productId);
+
+                if (product == null)
+                {
+                    // İstediğiniz ProductId'ye sahip bir ürün bulunamadı.
+                    // Burada bir hata yönetimi yapabilirsiniz.
+                    return 0;
+                }
+
+                var productQuantity = product.Quantity;
+
+                return productQuantity;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                // Kullanıcı yetkilendirme hatası durumunda yapılacak işlemler
                 return 0;
             }
-
-            var productQuantity = product.Quantity;
-
-            return productQuantity;
+            catch (Exception ex)
+            {
+                // Diğer hatalar için yapılacak işlemler
+                // Örneğin, hata loglama, istemciye hata mesajı dönme, vb.
+                throw ex;
+            }
         }
-
 
 
     }

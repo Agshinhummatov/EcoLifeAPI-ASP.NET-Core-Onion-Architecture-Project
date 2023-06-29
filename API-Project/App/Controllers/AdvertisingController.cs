@@ -52,7 +52,7 @@ namespace App.Controllers
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody] AdvertisingCreateDto advertising)
+        public async Task<IActionResult> Create([FromForm] AdvertisingCreateDto advertising)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace App.Controllers
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] AdvertisingUpdateDto advertising)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromForm] AdvertisingUpdateDto advertising)
         {
             try
             {
