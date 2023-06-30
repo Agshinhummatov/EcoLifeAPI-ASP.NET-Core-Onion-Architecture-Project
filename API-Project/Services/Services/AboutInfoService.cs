@@ -2,10 +2,13 @@
 using Domain.Models;
 using Repository.Repositories.Interfaces;
 using Services.DTOs.AboutInfo;
+using Services.DTOs.Advertising;
 using Services.DTOs.Slider;
+using Services.Helpers;
 using Services.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +26,27 @@ namespace Services.Services
             _mapper = mapper;
         }
 
-        public async Task CreateAsync(AboutInfoCreateDto about) => await _aboutRepo.CreateAsync(_mapper.Map<AboutInfo>(about));
+        public async Task CreateAsync(AboutInfoCreateDto aboutInfoCreateDto)
+        {
+            var validationContext = new ValidationContext(aboutInfoCreateDto, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(aboutInfoCreateDto, validationContext, validationResults, true);
+
+            if (!isValid)
+            {
+                string errorMessages = string.Join(", ", validationResults.Select(vr => vr.ErrorMessage));
+                throw new Exception(errorMessages);
+            }
+
+            if (string.IsNullOrEmpty(aboutInfoCreateDto.Title) || string.IsNullOrEmpty(aboutInfoCreateDto.Description))
+            {
+                throw new Exception("Title and Description are required.");
+            }
+
+            var mapAboutInfo = _mapper.Map<AboutInfo>(aboutInfoCreateDto);
+            mapAboutInfo.Image = await aboutInfoCreateDto.Photo.GetBytes();
+            await _aboutRepo.CreateAsync(mapAboutInfo);
+        }
 
         public async Task<IEnumerable<AboutInfoListDto>> GetAllAsync() => _mapper.Map<IEnumerable<AboutInfoListDto>>(await _aboutRepo.FindAllAsync());
 
@@ -31,15 +54,22 @@ namespace Services.Services
 
         public async Task DeleteAsync(int? id) => await _aboutRepo.DeleteAsync(await _aboutRepo.GetByIdAsync(id));
 
-        public async Task UpdateAsync(int? id, AboutInfoUpdateDto about)
+        public async Task UpdateAsync(int? id, AboutInfoUpdateDto aboutInfoUpdateDto)
         {
             if (id is null) throw new ArgumentNullException();
 
-            var existAbout = await _aboutRepo.GetByIdAsync(id) ?? throw new NullReferenceException();
+            var existAdvertising = await _adverstingRepo.GetByIdAsync(id) ?? throw new NullReferenceException();
 
-            _mapper.Map(about, existAbout);
+            existAdvertising.Title = aboutInfoUpdateDto.Title ?? existAdvertising.Title;
+            existAdvertising.Description = aboutInfoUpdateDto.Description ?? existAdvertising.Description;
 
-            await _aboutRepo.UpdateAsync(existAbout);
+            if (aboutInfoUpdateDto.Photo != null)
+            {
+
+                existAdvertising.Image = await aboutInfoUpdateDto.Photo.GetBytes();
+            }
+
+            await _aboutRepo.UpdateAsync(existAdvertising);
         }
 
         public async Task<IEnumerable<AboutInfoListDto>> SearchAsync(string? searchText)

@@ -11,9 +11,9 @@ namespace Services.Services.Interfaces
     {
         Task<IEnumerable<AboutInfoListDto>> GetAllAsync();
         Task<AboutInfoListDto> GetByIdAsync(int? id);
-        Task CreateAsync(AboutInfoCreateDto about);
+        Task CreateAsync(AboutInfoCreateDto aboutInfoCreateDto);
         Task DeleteAsync(int? id);
-        Task UpdateAsync(int? id, AboutInfoUpdateDto about);
+        Task UpdateAsync(int? id, AboutInfoUpdateDto aboutInfoUpdateDto);
         Task<IEnumerable<AboutInfoListDto>> SearchAsync(string? searchText);
         Task SoftDeleteAsync(int? id);
     }
