@@ -42,6 +42,9 @@ namespace Repository.Data
             modelBuilder.ApplyConfiguration(new BasketConfiguration());
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfiguration(new BlogConfiguration());
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Slider>().HasQueryFilter(m => !m.SoftDelete);
 
             modelBuilder.Entity<Benefit>().HasQueryFilter(m => !m.SoftDelete);
@@ -50,9 +53,14 @@ namespace Repository.Data
 
             modelBuilder.Entity<Banner>().HasQueryFilter(m => !m.SoftDelete);
 
+            modelBuilder.Entity<Blog>().HasQueryFilter(m => !m.SoftDelete);
+
+            modelBuilder.Entity<Category>().HasQueryFilter(m => !m.SoftDelete);
+
+            modelBuilder.Entity<AboutInfo>().HasQueryFilter(m => !m.SoftDelete);
+
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-         
 
             base.OnModelCreating(modelBuilder);
         }

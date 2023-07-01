@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Services.DTOs.Category;
-
+using Services.DTOs.Advertising;
+using Services.DTOs.Blog;
+using Services.Helpers.Enums;
 using Services.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,19 +11,18 @@ namespace App.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class BlogController : ControllerBase
     {
-        private readonly ICategoryService _service;
+        private readonly IBlogService _service;
 
-        public CategoryController(ICategoryService service)
+        public BlogController(IBlogService service)
         {
             _service = service;
         }
 
 
-
         [HttpGet]
-        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryListDto>))]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<BlogListDto>))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAll()
         {
@@ -31,7 +31,7 @@ namespace App.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(CategoryListDto))]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(BlogListDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetById([FromRoute][Required] int id)
@@ -56,11 +56,11 @@ namespace App.Controllers
         [Authorize(Roles = "SuperAdmin,Admin")]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromForm] CategoryCreateDto category)
+        public async Task<IActionResult> Create([FromForm] BlogCreateDto blog)
         {
             try
             {
-                await _service.CreateAsync(category);
+                await _service.CreateAsync(blog);
                 return Ok();
             }
             catch (ArgumentNullException ex)
@@ -92,11 +92,11 @@ namespace App.Controllers
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromForm] CategoryUpdateDto category)
+        public async Task<IActionResult> Update([FromRoute] int id, [FromForm] BlogUpdateDto blog)
         {
             try
             {
-                await _service.UpdateAsync(id, category);
+                await _service.UpdateAsync(id, blog);
                 return Ok();
             }
             catch (ArgumentNullException ex)
@@ -106,7 +106,7 @@ namespace App.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<CategoryListDto>))]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<BlogListDto>))]
         public async Task<IActionResult> Search(string? searchText)
         {
             try
@@ -136,5 +136,8 @@ namespace App.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+
     }
 }

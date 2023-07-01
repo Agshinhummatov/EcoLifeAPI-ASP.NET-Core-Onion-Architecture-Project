@@ -6,6 +6,7 @@ using Services.DTOs.Advertising;
 using Services.DTOs.Banner;
 using Services.DTOs.Basket;
 using Services.DTOs.Benefit;
+using Services.DTOs.Blog;
 using Services.DTOs.Category;
 using Services.DTOs.Product;
 using Services.DTOs.Slider;
@@ -42,7 +43,9 @@ namespace Services.Mappings
             CreateMap<AboutInfoCreateDto, AboutInfo>();
             CreateMap<AboutInfoUpdateDto, AboutInfo>();
 
-
+            CreateMap<Blog, BlogListDto>().ReverseMap();
+            CreateMap<BlogCreateDto, Blog>();
+            CreateMap<BlogUpdateDto, Blog>();
 
             CreateMap<ProductCreateDto, Product>().ReverseMap();
             CreateMap<Product, ProductListDto>().ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name)).ForMember(dest => dest.Photo, opt => opt.MapFrom(src => src.ProductImages.Select(m => m.Image))).

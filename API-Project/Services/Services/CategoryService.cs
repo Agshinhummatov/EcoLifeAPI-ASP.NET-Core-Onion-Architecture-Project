@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using Domain.Models;
 using Repository.Repositories.Interfaces;
+using Services.DTOs.Benefit;
 using Services.DTOs.Category;
+using Services.Helpers;
 using Services.Services.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +25,28 @@ namespace Services.Services
             _mapper = mapper;
         }
 
-        public async Task CreateAsync(CategoryCreateDto category) => await _categoryRepo.CreateAsync(_mapper.Map<Category>(category));
+        public async Task CreateAsync(CategoryCreateDto categoryCreateDto)
+        {
+            var validationContext = new ValidationContext(categoryCreateDto, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(categoryCreateDto, validationContext, validationResults, true);
+
+            if (!isValid)
+            {
+                string errorMessages = string.Join(", ", validationResults.Select(vr => vr.ErrorMessage));
+                throw new Exception(errorMessages);
+            }
+
+            if (string.IsNullOrEmpty(categoryCreateDto.Name))
+            {
+                throw new Exception("Name is required.");
+            }
+
+            var mapCategory = _mapper.Map<Category>(categoryCreateDto);
+            mapCategory.CategoryImage = await categoryCreateDto.Photo.GetBytes();
+            await _categoryRepo.CreateAsync(mapCategory);
+
+        }
 
         public async Task<IEnumerable<CategoryListDto>> GetAllAsync() => _mapper.Map<IEnumerable<CategoryListDto>>(await _categoryRepo.FindAllAsync());
 
@@ -30,15 +54,23 @@ namespace Services.Services
 
         public async Task DeleteAsync(int? id) => await _categoryRepo.DeleteAsync(await _categoryRepo.GetByIdAsync(id));
 
-        public async Task UpdateAsync(int? id, CategoryUpdateDto category)
+        public async Task UpdateAsync(int? id, CategoryUpdateDto categoryUpdateDto)
         {
+
             if (id is null) throw new ArgumentNullException();
 
-            var existCategroy = await _categoryRepo.GetByIdAsync(id) ?? throw new NullReferenceException();
+            var existCategory = await _categoryRepo.GetByIdAsync(id) ?? throw new NullReferenceException();
 
-            _mapper.Map(category, existCategroy);
+            existCategory.Name = categoryUpdateDto.Name ?? existCategory.Name;
 
-            await _categoryRepo.UpdateAsync(existCategroy);
+
+            if (categoryUpdateDto.Photo != null)
+            {
+
+                existCategory.CategoryImage = await categoryUpdateDto.Photo.GetBytes();
+            }
+
+            await _categoryRepo.UpdateAsync(existCategory);
         }
 
         public async Task<IEnumerable<CategoryListDto>> SearchAsync(string? searchText)

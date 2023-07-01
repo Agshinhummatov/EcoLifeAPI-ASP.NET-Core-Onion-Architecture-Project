@@ -44,6 +44,8 @@ builder.Services.AddScoped<IAboutInfoRepository, AboutInfoRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IBlogRepository, BlogRepository>();
+
 
 
 builder.Services.AddScoped<IAdvertisingService, AdvertisingService>();
@@ -54,6 +56,7 @@ builder.Services.AddScoped<IAboutInfoService, AboutInfoService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IBasketService, BasketService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IBlogService, BlogService>();
 
 
 

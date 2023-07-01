@@ -5,14 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.DTOs.Category
+namespace Services.DTOs.Blog
 {
-    public class CategoryUpdateDto
+    public class BlogUpdateDto
     {
-        public string? Name { get; set; }
-
+        public string? Title { get; set; }
+        public string? Description { get; set; }
         public IFormFile? Photo { get; set; }
-
-
     }
 }

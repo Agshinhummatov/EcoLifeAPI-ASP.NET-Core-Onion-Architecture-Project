@@ -1,5 +1,4 @@
 ﻿using Services.DTOs.Advertising;
-using Services.DTOs.Slider;
 using System;
 using System.Collections.Generic;
 using System.Linq;

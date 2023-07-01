@@ -58,7 +58,7 @@ namespace Services.Services
         {
             if (id is null) throw new ArgumentNullException();
 
-            var existAdvertising = await _adverstingRepo.GetByIdAsync(id) ?? throw new NullReferenceException();
+            var existAdvertising = await _aboutRepo.GetByIdAsync(id) ?? throw new NullReferenceException();
 
             existAdvertising.Title = aboutInfoUpdateDto.Title ?? existAdvertising.Title;
             existAdvertising.Description = aboutInfoUpdateDto.Description ?? existAdvertising.Description;
