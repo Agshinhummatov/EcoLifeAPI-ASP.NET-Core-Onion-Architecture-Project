@@ -20,9 +20,11 @@ namespace Repository.Repositories
         {
             var products = await _entities
                 .Where(m => m.SoftDelete == false)
-                .Include(m => m.Category).Include(m => m.ProductImages)
+                .Include(m => m.Category)
                 .ToListAsync();
             return products;
         }
+
+
     }
 }

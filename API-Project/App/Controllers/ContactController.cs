@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Services.DTOs.Product;
-using Services.DTOs.Slider;
+using Services.DTOs.Banner;
+using Services.DTOs.Contact;
 using Services.Helpers.Enums;
 using Services.Services.Interfaces;
 using System.ComponentModel.DataAnnotations;
@@ -11,19 +11,17 @@ namespace App.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ContactController : ControllerBase
     {
 
-        private readonly IProductService _service;
-
-        public ProductController(IProductService service)
+        private readonly IContactService _service;
+        public ContactController(IContactService service)
         {
-            _service= service;
+            _service = service;
         }
 
-
         [HttpGet]
-        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductListDto>))]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<ContactListDto>))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAll()
         {
@@ -32,7 +30,7 @@ namespace App.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(ProductListDto))]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(ContactListDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetById([FromRoute][Required] int id)
@@ -54,23 +52,24 @@ namespace App.Controllers
         }
 
         [HttpPost]
+       
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromForm] ProductCreateDto product)
+        public async Task<IActionResult> Create([FromForm] ContactCreateDto contact)
         {
             try
             {
-                await _service.CreateAsync(product);
+                await _service.CreateAsync(contact);
                 return Ok();
             }
             catch (ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);
             }
-
         }
 
         [HttpDelete]
+      
         [Route("{id}")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
@@ -85,30 +84,11 @@ namespace App.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
         }
 
-
-        [HttpPut]
-        [Route("{id}")]
-
-        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
-        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromForm] ProductUpdateDto product)
-        {
-            try
-            {
-                await _service.UpdateAsync(id, product);
-                return Ok();
-            }
-            catch (ArgumentNullException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
 
         [HttpGet]
-        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<ProductListDto>))]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<ContactListDto>))]
         public async Task<IActionResult> Search(string? searchText)
         {
             try
@@ -120,6 +100,7 @@ namespace App.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
 
         [HttpPut]
         [Route("{id}")]
@@ -138,8 +119,6 @@ namespace App.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
 
     }
 }

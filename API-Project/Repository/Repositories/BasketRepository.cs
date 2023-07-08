@@ -91,7 +91,7 @@ namespace Repository.Repositories
 
             var basket = await _entities
                 .Include(m => m.BasketProducts)
-                .ThenInclude(m => m.Product).ThenInclude(m=>m.ProductImages)
+                .ThenInclude(m => m.Product)
                 .FirstOrDefaultAsync(m => m.AppUserId == userId);
 
             var basketProducts = basket.BasketProducts;
@@ -114,7 +114,7 @@ namespace Repository.Repositories
 
             var basket = await _entities
                 .Include(m => m.BasketProducts)
-                .ThenInclude(m => m.Product).ThenInclude(m => m.ProductImages)
+                .ThenInclude(m => m.Product)
                 .FirstOrDefaultAsync(m => m.AppUserId == userId);
             var basketProduct = basket.BasketProducts
               .FirstOrDefault(bp => bp.ProductId == prodId && bp.BasketId == basket.Id);

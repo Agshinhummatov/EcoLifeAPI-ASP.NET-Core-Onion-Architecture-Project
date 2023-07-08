@@ -22,7 +22,6 @@ namespace Services.DTOs.Product
 
         public string Description { get; set; }
 
-        public DateTime CreatedAt { get; set; }
 
         public int CategoryId { get; set; }
 
@@ -30,11 +29,17 @@ namespace Services.DTOs.Product
 
         public int BasketCount { get; set; }
 
+        public DateTime CreatedAt { get; set; }
 
+        public DateTime UpdateDate { get; set; }
+
+        public byte[] Image { get; set; }
+
+        public byte[] HoverImage { get; set; }
 
         //public List<byte[]> Photo { get; set; }
 
-        public List<string> Photo { get; set; }
+        //public List<string> Photo { get; set; }
 
         //public byte[]? Image { get; set; }
 

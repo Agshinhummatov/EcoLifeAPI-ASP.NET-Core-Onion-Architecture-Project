@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace Domain.Configurations
 {
-    public class ProductImageConfiguration : IEntityTypeConfiguration<ProductImage>
+    public class ProdcutCommentConfiguration : IEntityTypeConfiguration<ProdcutComment>
     {
-        public void Configure(EntityTypeBuilder<ProductImage> builder)
+        public void Configure(EntityTypeBuilder<ProdcutComment> builder)
         {
-            builder.Property(m => m.Image).IsRequired();
+            builder.Property(m => m.Context).IsRequired();
+
         }
 
     }

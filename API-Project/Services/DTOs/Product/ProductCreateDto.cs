@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Services.DTOs.ProductImage;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,10 +17,20 @@ namespace Services.DTOs.Product
         public int Rates { get; set; }
       
         public string Description { get; set; }
+
         public int CategoryId { get; set; }
 
 
-        public IFormFileCollection Images { get; set; }
+        [Required(ErrorMessage = "Image is required.")]
+        public IFormFile? Photo { get; set; }
+
+
+        [Required(ErrorMessage = "Image is required.")]
+        public IFormFile? HoverPhoto { get; set; }
+
+
+
+        //public IFormFileCollection Images { get; set; }
 
         //public List<byte[]>  Image { get; set; }
     }

@@ -10,9 +10,17 @@ using Services.Helpers;
 using Services.Helpers.Enums;
 using Services.Helpers.Responses;
 using Services.Services.Interfaces;
+using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net.Mail;
+using System.Net;
 using System.Security.Claims;
 using System.Text;
+using Org.BouncyCastle.Asn1.Ocsp;
+using Microsoft.AspNetCore.Http;
+using MailKit.Security;
+using MimeKit;
+using MailKit.Net.Smtp;
 
 namespace Services.Services
 {
@@ -22,6 +30,7 @@ namespace Services.Services
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IMapper _mapper;
         private readonly JWTSettings _jwtSetting;
+      
 
         public AccountService(UserManager<AppUser> userManager,
                               RoleManager<IdentityRole> roleManager,
@@ -69,6 +78,9 @@ namespace Services.Services
 
 
 
+       
+
+
 
 
         public async Task<RegisterResponse> SignUpAsync(RegisterDto model)
@@ -84,6 +96,9 @@ namespace Services.Services
 
             return new RegisterResponse { Errors = null, StatusMessage = "Success" };
         }
+
+
+
 
 
         //public async Task<LoginResponse> SignInAsync(LoginDto model)

@@ -20,6 +20,7 @@ namespace Repository.Data
            
 
             modelBuilder.ApplyConfiguration(new SliderConfiguration());
+
             modelBuilder.ApplyConfiguration(new AdvertisingConfiguration());
 
             modelBuilder.ApplyConfiguration(new BannerConfiguration());
@@ -30,8 +31,6 @@ namespace Repository.Data
 
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
 
-            modelBuilder.ApplyConfiguration(new ProductImageConfiguration());
-            base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
             base.OnModelCreating(modelBuilder);
@@ -42,7 +41,20 @@ namespace Repository.Data
             modelBuilder.ApplyConfiguration(new BasketConfiguration());
             base.OnModelCreating(modelBuilder);
 
+
+            modelBuilder.ApplyConfiguration(new WishlistConfiguration());
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new WishlistProductConfiguration());
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.ApplyConfiguration(new BlogConfiguration());
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new ProdcutCommentConfiguration());
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.ApplyConfiguration(new ContactConfiguration());
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Slider>().HasQueryFilter(m => !m.SoftDelete);

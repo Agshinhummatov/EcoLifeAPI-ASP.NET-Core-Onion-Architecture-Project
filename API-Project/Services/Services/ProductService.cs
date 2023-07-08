@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using Domain.Models;
 using Repository.Repositories.Interfaces;
+using Services.DTOs.Advertising;
 using Services.DTOs.Product;
+using Services.DTOs.Slider;
 using Services.Helpers;
 using Services.Services.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace Services.Services
 {
@@ -11,7 +14,6 @@ namespace Services.Services
     {
         private readonly IProductRepository _productRepo;
         private readonly IBasketRepository _basketRepository;
-
         private readonly IMapper _mapper;
 
         public ProductService(IProductRepository productRepo, IMapper mapper, IBasketRepository basketRepository)
@@ -21,37 +23,29 @@ namespace Services.Services
             _basketRepository = basketRepository;
         }
 
-        public async Task CreateAsync(ProductCreateDto productDto)
+        public async Task CreateAsync(ProductCreateDto producCreatetDto)
         {
-            var product = new Product
+
+            var validationContext = new ValidationContext(producCreatetDto, serviceProvider: null, items: null);
+            var validationResults = new List<ValidationResult>();
+            bool isValid = Validator.TryValidateObject(producCreatetDto, validationContext, validationResults, true);
+
+            if (!isValid)
             {
-                Name = productDto.Name,
-                Price = productDto.Price,
-                Description = productDto.Description,
-                CategoryId = productDto.CategoryId,
-                Rates = productDto.Rates,
-                Count = productDto.Count,
-                
-
-            };
-
-            var productImages = new List<ProductImage>();
-
-            foreach (var imageDto in productDto.Images)
-            {
-                var productImage = new ProductImage
-                {
-                    Image = await imageDto.GetBytes(),
-                    Product = product
-
-                };
-
-                productImages.Add(productImage);
+                string errorMessages = string.Join(", ", validationResults.Select(vr => vr.ErrorMessage));
+                throw new Exception(errorMessages);
             }
 
-            product.ProductImages = productImages;
+            if (string.IsNullOrEmpty(producCreatetDto.Name) || string.IsNullOrEmpty(producCreatetDto.Description))
+            {
+                throw new Exception("Title and Description are required.");
+            }
 
-            await _productRepo.CreateAsync(product);
+            var mapAdvertising = _mapper.Map<Product>(producCreatetDto);
+            mapAdvertising.Image = await producCreatetDto.Photo.GetBytes();
+            mapAdvertising.HoverImage = await producCreatetDto.HoverPhoto.GetBytes();
+            await _productRepo.CreateAsync(mapAdvertising);
+
         }
 
         public async Task<IEnumerable<ProductListDto>> GetAllAsync() => _mapper.Map<IEnumerable<ProductListDto>>(await _productRepo.GetAllProductsWithCategories());
@@ -63,15 +57,36 @@ namespace Services.Services
         public async Task DeleteAsync(int? id) => await _productRepo.DeleteAsync(await _productRepo.GetByIdAsync(id));
 
 
-        public async Task UpdateAsync(int? id, ProductUpdateDto product)
+        public async Task UpdateAsync(int? id, ProductUpdateDto productUpdateDto)
         {
             if (id is null) throw new ArgumentNullException();
 
-            var existProduct = await _productRepo.GetByIdAsync(id) ?? throw new NullReferenceException();
+            var existingProduct = await _productRepo.GetByIdAsync(id) ?? throw new NullReferenceException();
 
-            _mapper.Map(product, existProduct);
+            existingProduct.Name = productUpdateDto.Name ?? existingProduct.Name;
+            existingProduct.Description = productUpdateDto.Description ?? existingProduct.Description;
+            existingProduct.Rates = productUpdateDto.Rates ?? existingProduct.Rates;
+            existingProduct.Price = productUpdateDto.Price ?? existingProduct.Price;
+            existingProduct.Count = productUpdateDto.Count ?? existingProduct.Count;
 
-            await _productRepo.UpdateAsync(existProduct);
+
+            if (productUpdateDto.Photo != null)
+            {
+                existingProduct.Image = await productUpdateDto.Photo.GetBytes();
+            }
+
+            if (productUpdateDto.HoverPhoto != null)
+            {
+                existingProduct.HoverImage = await productUpdateDto.HoverPhoto.GetBytes();
+            }
+
+            if (existingProduct.CategoryId != productUpdateDto.CategoryId)
+            {
+                existingProduct.CategoryId = productUpdateDto.CategoryId;
+                existingProduct.Category = null; // Resetting the Category reference to ensure it's reloaded when needed
+            }
+
+            await _productRepo.UpdateAsync(existingProduct);
         }
 
         public async Task<IEnumerable<ProductListDto>> SearchAsync(string? searchText)

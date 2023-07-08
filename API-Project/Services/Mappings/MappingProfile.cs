@@ -8,8 +8,10 @@ using Services.DTOs.Basket;
 using Services.DTOs.Benefit;
 using Services.DTOs.Blog;
 using Services.DTOs.Category;
+using Services.DTOs.Contact;
 using Services.DTOs.Product;
 using Services.DTOs.Slider;
+using Services.DTOs.Wishlist;
 
 namespace Services.Mappings
 {
@@ -47,15 +49,23 @@ namespace Services.Mappings
             CreateMap<BlogCreateDto, Blog>();
             CreateMap<BlogUpdateDto, Blog>();
 
+
+            CreateMap<Contact, ContactListDto>().ReverseMap();
+            CreateMap<ContactCreateDto, Contact>();
+         
+
             CreateMap<ProductCreateDto, Product>().ReverseMap();
-            CreateMap<Product, ProductListDto>().ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name)).ForMember(dest => dest.Photo, opt => opt.MapFrom(src => src.ProductImages.Select(m => m.Image))).
-                ForMember(dest => dest.Photo, opt => opt.MapFrom(src => src.ProductImages.Select(m => Convert.ToBase64String(m.Image))));
+            CreateMap<Product, ProductListDto>().ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
+              
 
 
             CreateMap<ProductUpdateDto, Product>().ReverseMap();
             CreateMap<ProductGetDto, Product>().ReverseMap();
 
             CreateMap<BasketProductListDto, BasketProduct>().ReverseMap();
+
+
+            CreateMap<WishlistProductListDto, WishlistProduct>().ReverseMap();
 
 
 

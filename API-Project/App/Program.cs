@@ -43,9 +43,12 @@ builder.Services.AddScoped<IBenefitRepository, BenefitRepository>();
 builder.Services.AddScoped<IAboutInfoRepository, AboutInfoRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+builder.Services.AddScoped<IWishlistRepository, WishlistRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
+builder.Services.AddScoped<IProdcutCommentRepository, ProductCommentRepository >();
 
+builder.Services.AddScoped<IContactRepository, ContactRepository>();
 
 
 builder.Services.AddScoped<IAdvertisingService, AdvertisingService>();
@@ -55,9 +58,11 @@ builder.Services.AddScoped<IBenefitService, BenefitService>();
 builder.Services.AddScoped<IAboutInfoService, AboutInfoService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IBasketService, BasketService>();
+builder.Services.AddScoped<IWishlistService, WishlistService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IBlogService, BlogService>();
-
+builder.Services.AddScoped<IProdcutCommentService, ProductCommentService>();
+builder.Services.AddScoped<IContactService, ContactService>();
 
 
 builder.Services.AddScoped<IAccountService, AccountService>();

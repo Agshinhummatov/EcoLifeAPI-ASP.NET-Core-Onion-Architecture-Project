@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Services.DTOs.Account;
 using Services.Helpers.Responses;
 
@@ -13,6 +14,8 @@ namespace Services.Services.Interfaces
         Task<IEnumerable<UserDto>> GetUsersAsync();
         Task AddRoleToUserAsync(UserRoleDto model);
         Task<IEnumerable<string>> GetRolesByUserAsync(string userId);
+
+
 
 
     }

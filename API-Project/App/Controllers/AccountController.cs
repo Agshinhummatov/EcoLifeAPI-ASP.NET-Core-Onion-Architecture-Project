@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Services.DTOs.Account;
 using Services.Helpers.Enums;
 using Services.Helpers.Responses;
+using Services.Services;
 using Services.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -19,24 +21,31 @@ namespace App.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAccountService _service;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly UserManager<AppUser> _userManager;
 
-        public AccountController(IAccountService service)
+        public AccountController(IAccountService service, IHttpContextAccessor httpContextAccessor, UserManager<AppUser> userManager)
         {
             _service = service;
+            _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
         }
+
 
 
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK)]
         public async Task<IActionResult> SignUp([FromBody] RegisterDto request)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
             return Ok(await _service.SignUpAsync(request));
         }
+
+
 
 
         [HttpPost]
