@@ -24,5 +24,6 @@ namespace Domain.Models
         public byte[] HoverImage { get; set; }
 
         public List<ProdcutComment> ProdcutComments { get; set; }
+        
     }
 }

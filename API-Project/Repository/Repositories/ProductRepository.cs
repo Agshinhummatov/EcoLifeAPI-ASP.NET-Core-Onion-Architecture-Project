@@ -26,5 +26,17 @@ namespace Repository.Repositories
         }
 
 
+        public async Task<List<Product>> GetCategoryProduct(int categorId)
+        {
+            return await _entities.Where(x=>x.CategoryId == categorId).ToListAsync();
+        }
+
+
+        public async Task<int> GetCategoryProductCount(int categoryId)
+        {
+            return await _entities.CountAsync(x => x.CategoryId == categoryId);
+        }
+
+
     }
 }

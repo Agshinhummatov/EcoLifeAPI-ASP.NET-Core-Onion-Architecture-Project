@@ -53,6 +53,54 @@ namespace App.Controllers
 
         }
 
+
+        [HttpGet]
+        [Route("{id}")]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(ProductListDto))]
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetCategoryByProduct([FromRoute][Required] int id)
+        {
+            try
+            {
+                return Ok(await _service.GetProductCategory(id));
+            }
+            catch (NullReferenceException ex)
+            {
+                return NotFound(ex.Message);
+
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(ProductListDto))]
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetCategoryByProductCount([FromRoute][Required] int id)
+        {
+            try
+            {
+                return Ok(await _service.GetCategoryProductCount(id));
+            }
+            catch (NullReferenceException ex)
+            {
+                return NotFound(ex.Message);
+
+            }
+            catch (ArgumentNullException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+
         [HttpPost]
         [ProducesResponseType(statusCode: StatusCodes.Status201Created)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]

@@ -11,5 +11,11 @@ namespace Repository.Repositories.Interfaces
     {
         Task<List<Product>> GetAllProductsWithCategories();
 
+        Task<List<Product>> GetCategoryProduct(int categorId);
+
+        Task<int> GetCategoryProductCount(int categoryId);
+
+
+
     }
 }

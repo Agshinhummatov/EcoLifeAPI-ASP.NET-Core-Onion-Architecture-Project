@@ -15,6 +15,7 @@ namespace Services.Services
         private readonly IProductRepository _productRepo;
         private readonly IBasketRepository _basketRepository;
         private readonly IMapper _mapper;
+      
 
         public ProductService(IProductRepository productRepo, IMapper mapper, IBasketRepository basketRepository)
         {
@@ -100,6 +101,17 @@ namespace Services.Services
         {
             await _productRepo.SoftDeleteAsync(id);
         }
+        
 
+       
+        public async Task<List<Product>> GetProductCategory(int categorId)
+        {
+           return await _productRepo.GetCategoryProduct(categorId);
+        }
+
+        public async Task<int> GetCategoryProductCount(int categoryId)
+        {
+            return await _productRepo.GetCategoryProductCount(categoryId);
+        }
     }
 }
