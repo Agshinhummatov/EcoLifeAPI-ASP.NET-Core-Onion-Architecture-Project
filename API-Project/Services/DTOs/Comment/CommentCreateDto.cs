@@ -11,5 +11,6 @@ namespace Services.DTOs.Comment
         public string? Context { get; set; }
         public string? UserName { get; set; }
         public int PordicutId { get; set; }
+     
     }
 }

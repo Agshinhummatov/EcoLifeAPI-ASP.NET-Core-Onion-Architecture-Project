@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Repository.Data;
 
@@ -11,9 +12,10 @@ using Repository.Data;
 namespace Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230712103841_CreateBlogComment")]
+    partial class CreateBlogComment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,7 +52,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AboutInfo", (string)null);
+                    b.ToTable("AboutInfo");
                 });
 
             modelBuilder.Entity("Domain.Models.Advertising", b =>
@@ -82,7 +84,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Advertising", (string)null);
+                    b.ToTable("Advertising");
                 });
 
             modelBuilder.Entity("Domain.Models.AppUser", b =>
@@ -182,7 +184,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Banner", (string)null);
+                    b.ToTable("Banner");
                 });
 
             modelBuilder.Entity("Domain.Models.Basket", b =>
@@ -211,7 +213,7 @@ namespace Repository.Migrations
                     b.HasIndex("AppUserId")
                         .IsUnique();
 
-                    b.ToTable("Basket", (string)null);
+                    b.ToTable("Basket");
                 });
 
             modelBuilder.Entity("Domain.Models.BasketProduct", b =>
@@ -246,7 +248,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("BasketProduct", (string)null);
+                    b.ToTable("BasketProduct");
                 });
 
             modelBuilder.Entity("Domain.Models.Benefit", b =>
@@ -274,7 +276,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Benefit", (string)null);
+                    b.ToTable("Benefit");
                 });
 
             modelBuilder.Entity("Domain.Models.Blog", b =>
@@ -306,7 +308,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Blog", (string)null);
+                    b.ToTable("Blog");
                 });
 
             modelBuilder.Entity("Domain.Models.BlogComment", b =>
@@ -348,7 +350,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("BlogComment", (string)null);
+                    b.ToTable("BlogComment");
                 });
 
             modelBuilder.Entity("Domain.Models.Category", b =>
@@ -378,7 +380,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category", (string)null);
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("Domain.Models.Contact", b =>
@@ -413,7 +415,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contact", (string)null);
+                    b.ToTable("Contact");
                 });
 
             modelBuilder.Entity("Domain.Models.ProdcutComment", b =>
@@ -450,7 +452,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProdcutComment", (string)null);
+                    b.ToTable("ProdcutComment");
                 });
 
             modelBuilder.Entity("Domain.Models.Product", b =>
@@ -503,7 +505,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Product", (string)null);
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("Domain.Models.Slider", b =>
@@ -535,7 +537,7 @@ namespace Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Slider", (string)null);
+                    b.ToTable("Slider");
                 });
 
             modelBuilder.Entity("Domain.Models.Wishlist", b =>
@@ -564,7 +566,7 @@ namespace Repository.Migrations
                     b.HasIndex("AppUserId")
                         .IsUnique();
 
-                    b.ToTable("Wishlist", (string)null);
+                    b.ToTable("Wishlist");
                 });
 
             modelBuilder.Entity("Domain.Models.WishlistProduct", b =>
@@ -599,7 +601,7 @@ namespace Repository.Migrations
 
                     b.HasIndex("WishlistId");
 
-                    b.ToTable("WishlistProduct", (string)null);
+                    b.ToTable("WishlistProduct");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

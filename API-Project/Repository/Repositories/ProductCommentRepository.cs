@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Repository.Repositories
 {
+
     public class ProductCommentRepository : Repository<ProdcutComment>, IProdcutCommentRepository
     {
 

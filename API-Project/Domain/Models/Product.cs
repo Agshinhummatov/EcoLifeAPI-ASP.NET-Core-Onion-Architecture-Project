@@ -18,11 +18,14 @@ namespace Domain.Models
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
 
+      
+
         public byte[]  Image { get; set; }
 
         public byte[] HoverImage { get; set; }
 
         public List<ProdcutComment> ProdcutComments { get; set; }
-        
+
+        public List<BlogComment> BlogComments { get; set; }
     }
 }

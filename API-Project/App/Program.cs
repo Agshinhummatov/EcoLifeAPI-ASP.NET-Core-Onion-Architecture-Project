@@ -11,6 +11,7 @@ using Services.Mappings;
 using Services.Services;
 using Services.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection.Emit;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -70,6 +71,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWT"));
 
 builder.Services.AddScoped<JWTSettings>();
+
 
 
 builder.Services.AddCors(options =>
