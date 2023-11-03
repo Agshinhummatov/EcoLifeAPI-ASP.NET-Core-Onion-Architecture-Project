@@ -84,7 +84,7 @@ namespace Services.Services
             if (existingProduct.CategoryId != productUpdateDto.CategoryId)
             {
                 existingProduct.CategoryId = productUpdateDto.CategoryId;
-                existingProduct.Category = null; // Resetting the Category reference to ensure it's reloaded when needed
+                existingProduct.Category = null; 
             }
 
             await _productRepo.UpdateAsync(existingProduct);
