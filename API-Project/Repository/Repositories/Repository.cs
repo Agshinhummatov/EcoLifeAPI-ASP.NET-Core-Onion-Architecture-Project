@@ -36,6 +36,7 @@ namespace Repository.Repositories
         public async Task<IEnumerable<T>> FindAllAsync(Expression<Func<T, bool>> expression = null)
         {
             return expression != null ? await entities.Where(expression).ToListAsync() : await entities.ToListAsync();
+
         }
 
         public async Task<T> GetByIdAsync(int? id)
